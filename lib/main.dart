@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:purees/features/home/presentation/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Purees Home Page'),
+      home: const HomeScreen(),
     );
   }
 }
