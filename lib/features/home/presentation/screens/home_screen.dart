@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:purees/features/home/presentation/widgets/exports.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,9 +5,21 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final products = dummyProducts.reversed.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Baby purees'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductCartScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -20,22 +31,22 @@ class HomeScreen extends StatelessWidget {
           FlashSaleSection(),
           SizedBox(height: 10),
           CategorySection(),
-          SizedBox(
-            // increased height so horizontal ProductCard list is visible
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: dummyProducts.length,
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: products.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 0.72,
+              ),
               itemBuilder: (context, index) {
-                final Product product = dummyProducts[index];
-                return ProductCard(
-                  name: product.name,
-                  imageUrl: product.imageUrl,
-                  price: product.price,
-                  oldPrice: product.oldPrice,
-                  isOnSale: product.isOnSale,
-                  description: product.description,
-                );
+                final product = products[index];
+                return ProductCard(product: product);
               },
             ),
           ),

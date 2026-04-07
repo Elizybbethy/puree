@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:purees/features/home/presentation/screens/home_screen.dart';
+import 'package:purees/features/home/presentation/widgets/exports.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
