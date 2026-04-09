@@ -1,4 +1,4 @@
-import 'package:purees/features/home/presentation/widgets/exports.dart';
+import 'package:purees/features/home/presentation/exports.dart';
 
 final List<Product> dummyProducts = [
   Product(

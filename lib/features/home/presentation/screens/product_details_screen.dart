@@ -1,4 +1,4 @@
-import '../widgets/exports.dart';
+import '../exports.dart';
 
 class ProductDetailsScreen extends ConsumerWidget {
   final Product product;

@@ -1,4 +1,4 @@
-import 'package:purees/features/home/presentation/widgets/exports.dart';
+import 'package:purees/features/home/presentation/exports.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Baby purees'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const CartBadge(),
             onPressed: () {
               Navigator.push(
                 context,

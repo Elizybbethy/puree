@@ -1,4 +1,4 @@
-import '../../presentation/widgets/exports.dart';
+import '../../presentation/exports.dart';
 
 class CartItem {
   final Product product;

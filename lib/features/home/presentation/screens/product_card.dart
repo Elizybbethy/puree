@@ -1,4 +1,4 @@
-import '../widgets/exports.dart';
+import '../exports.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
