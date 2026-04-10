@@ -1,6 +1,12 @@
 import 'package:purees/features/home/presentation/exports.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final container = ProviderContainer();
+
+  // Load the cart data before running the app
+    await container.read(cartProvider.notifier).loadCart();
   runApp(const ProviderScope(child: MyApp()));
 }
 
