@@ -1,7 +1,12 @@
 import '../../presentation/exports.dart';
 
 final cartProvider = StateNotifierProvider<CartNotifier, List<CartItem>>((ref) {
-  return CartNotifier();
+  final notifier = CartNotifier();
+  // Ensure we attempt to load persisted cart when the provider is created.
+  // This covers cases where the notifier constructor may not be re-run (hot reload)
+  // but the provider factory is invoked.
+  notifier.loadCart();
+  return notifier;
 });
 
 class CartNotifier extends StateNotifier<List<CartItem>> {
@@ -10,7 +15,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     loadCart();
   }
 
-  void addToCart(Product product) {
+  Future<void> addToCart(Product product) async {
     final existingIndex =
         state.indexWhere((item) => item.product.name == product.name);
     if (existingIndex != -1) {
@@ -28,15 +33,15 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
       // If the product is not in the cart, add it with quantity 1
       state = [...state, CartItem(product: product, quantity: 1)];
     }
-    saveCart();
+    await saveCart();
   }
 
-  void removeFromCart(Product product) {
+  Future<void> removeFromCart(Product product) async {
     state = state.where((item) => item.product.name != product.name).toList();
-    saveCart();
+    await saveCart();
   }
 
-  void increaseQuantity(Product product) {
+  Future<void> increaseQuantity(Product product) async {
     final index = state.indexWhere((item) => item.product.name == product.name);
     if (index >= 0) {
       final updatedItem = CartItem(
@@ -49,10 +54,10 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
         ...state.sublist(index + 1),
       ];
     }
-    saveCart();
+    await saveCart();
   }
 
-  void decreaseQuantity(Product product) {
+  Future<void> decreaseQuantity(Product product) async {
     final index = state.indexWhere((item) => item.product.name == product.name);
     if (index >= 0 && state[index].quantity > 1) {
       final updatedItem = CartItem(
@@ -67,7 +72,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     } else if (index >= 0) {
       removeFromCart(product);
     }
-    saveCart();
+    await saveCart();
   }
 
   // void clearCart() {
@@ -83,14 +88,20 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
       final prefs = await SharedPreferences.getInstance();
       final cartData = prefs.getString('cart');
       if (cartData != null && cartData.isNotEmpty) {
+        // debug: show loaded raw JSON
+        // ignore: avoid_print
+        print('loadCart: raw cart data = $cartData');
         final List<dynamic> jsonList = jsonDecode(cartData);
         state = jsonList.map((json) => CartItem.fromJson(json)).toList();
+        // ignore: avoid_print
+        print('loadCart: restored ${state.length} items');
       }
     } catch (e) {
       // If parsing fails, clear stored cart to avoid repeated failures
       // and keep the in-memory cart empty.
       // Optionally log the error during development.
-      // print('Failed to load cart: $e\n$st');
+      // ignore: avoid_print
+      print('Failed to load cart: $e');
     }
   }
 
@@ -98,9 +109,14 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final cartData = jsonEncode(state.map((item) => item.toJson()).toList());
+      // debug: show data being saved
+      // ignore: avoid_print
+      print('saveCart: saving ${state.length} items -> $cartData');
       await prefs.setString('cart', cartData);
     } catch (e) {
       // print('Failed to save cart: $e');
+      // ignore: avoid_print
+      print('Failed to save cart: $e');
     }
   }
 }
