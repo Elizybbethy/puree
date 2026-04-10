@@ -15,3 +15,4 @@ export 'screens/home_screen.dart';
 export 'widgets/cart_badge.dart';
 export 'dart:convert';
 export 'package:shared_preferences/shared_preferences.dart';
+export 'screens/checkout_screen.dart';

@@ -60,7 +60,11 @@ class ProductCartScreen extends ConsumerWidget {
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     onPressed: () {
-                      // Implement checkout functionality here
+                      // Implement checkout functionality 
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CheckoutScreen()),
+                        );
                     },
                     child: const Text('Checkout'),
                   ),
