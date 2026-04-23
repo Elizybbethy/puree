@@ -12,7 +12,8 @@ class BannerSection extends StatelessWidget {
         color: Colors.teal[300],
         borderRadius: BorderRadius.circular(12.0),
         image: const DecorationImage(
-          image: AssetImage('assets/images/banner.png'),
+          // Use a network PNG placeholder to avoid missing local asset crashes
+          image: NetworkImage('https://placehold.co/800x150.png'),
           fit: BoxFit.cover,
         ),
       ),

@@ -17,7 +17,8 @@ class FlashSaleSection extends StatelessWidget {
             color: Colors.orange[300],
             borderRadius: BorderRadius.circular(12.0),
             image: const DecorationImage(
-              image: AssetImage('assets/images/banner.png'),
+              // Use a PNG network placeholder so web/runs don't fail on missing asset
+              image: NetworkImage('https://placehold.co/120x150.png'),
               fit: BoxFit.cover,
             ),
           ),
